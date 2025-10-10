@@ -17,6 +17,7 @@ on:
         required: true
 permissions:
   contents: write
+  id-token: write
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -36,11 +37,17 @@ jobs:
         run: npm test
       - name: npm version
         run: npm version "${{ inputs.version }}"
+      - uses: step-security/wait-for-secrets@v1
+        id: otp
+        with:
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          secrets: |
+            OTP:
+              name: 'npm otp'
+              description: 'An npm one time password'
       - name: npm publish
         run: |
-          echo ${{ secrets.NPM_TOKEN }}
-          npm whoami
-          npm publish --loglevel=silly --access=public --tag="${{ inputs.tag }}"
+          npm publish --access=public --tag="${{ inputs.tag }}" --otp ${{ steps.otp.outputs.OTP }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: git push
