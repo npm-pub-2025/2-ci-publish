@@ -29,13 +29,19 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24.x
+          registry-url: 'https://registry.npmjs.com'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: npm test
         run: npm test
       - name: npm version
         run: npm version "${{ inputs.version }}"
-      - name: setup npm auth
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
       - name: npm publish
-        run: npm publish --access=public --tag="${{ inputs.tag }}"
+        run: |
+          echo ${{ secrets.NPM_TOKEN }}
+          npm whoami
+          npm publish --loglevel=silly --access=public --tag="${{ inputs.tag }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: git push
         run: git push origin --follow-tags
