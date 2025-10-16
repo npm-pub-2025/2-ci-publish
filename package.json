@@ -1,6 +1,6 @@
 {
   "name": "@npmpub2025/ci-publish",
-  "version": "0.0.2",
+  "version": "0.0.10",
   "description": "A test package to demonstrate ci publishing",
   "license": "ISC",
   "author": "Wes Todd <wes@wesleytodd.com>",
