@@ -144,7 +144,7 @@ This setup reflects one way of publishing safely from CI. You can change details
 ## Tips
 
 - Use CI publishing only when you need it. Local publishing is simpler and safer for most projects.
-- Check your GitHub Actions dependencies often.
+- Check your GitHub Actions dependencies often. Specifically ensure any [pinned to commits are not from a fork](https://www.chainguard.dev/unchained/what-the-fork-imposter-commits-in-github-actions-and-ci-cd)
 - Rotate your tokens regularly.
 
 **Multi-Releasers Strategy**
